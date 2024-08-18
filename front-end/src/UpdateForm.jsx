@@ -19,6 +19,7 @@ function UpdateForm() {
             const retrieveAvmet = async () => {
                 let res = await axios.get(`${BACKEND_URL}${id}`)
                 let data = res.data
+                console.log(data)
                 setAvmet(data)
             }
             retrieveAvmet()
