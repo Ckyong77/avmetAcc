@@ -5,18 +5,14 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import axios from "axios"
-import BACKEND_URL from "../constant"
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
-import io from "socket.io-client"
-
 
 function UpdateForm() {
     const { id } = useParams()
     const [avmet, setAvmet] = useState({})
     const navigate = useNavigate()
-
-    const socket = io.connect(BACKEND_URL)
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
     useEffect(
         function () {
