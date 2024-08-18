@@ -9,9 +9,10 @@ function App() {
     <>
       <h1>AvMet accountability</h1>
       <Routes>
-        <Route path = '/:id' element={<UpdateForm/>}/>
-        <Route path = '/' element={<AvmetTable />}/>
+          <Route path='/:id' element={ <UpdateForm />}/>
+          <Route path='/' element={ <AvmetTable />}/>
       </Routes>
+
     </>
   )
 }

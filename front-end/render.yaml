@@ -1,0 +1,6 @@
+yaml
+   redirects:
+     - source: "/*"
+       destination: "/index.html"
+       status: 200
+   
