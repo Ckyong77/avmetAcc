@@ -26,6 +26,7 @@ function AvmetTable() {
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
     const uselocation = useLocation();
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
     useEffect(function () {
         initialiseAvmetList()
