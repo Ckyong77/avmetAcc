@@ -52,7 +52,7 @@ const store = MongoStore.create({
 })
 
 
-//configuring sessions in localhost
+//configuring sessions in development
 // const sessionConfig = {
 //     store: store,
 //     secret: process.env.SECRET, //required parameter
@@ -87,6 +87,7 @@ const sessionConfig = {
 
 
 //definiting  uses
+app.set("trust proxy", 1);
 app.use(session(sessionConfig))
 app.use(express.json())
 app.use(cookieParser())
