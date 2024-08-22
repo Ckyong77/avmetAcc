@@ -57,8 +57,8 @@ const sessionConfig = {
     resave: false, //set to false if we are not using session.touch()
     saveUninitialized: true, //set to true if want to track session id
     cookie: {
-        httpOnly: true,
-        secure: process.env.SECURE, //recommended for https:// webpages. if project, we wont have https. 
+        httpOnly: false,
+        secure: false, //recommended for https:// webpages. if project, we wont have https. 
         expires: Date.now() + 604800000,
         maxAge: 604800000
     }
@@ -69,7 +69,7 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(express.json())
 app.use(cors({
-    origin: process.env.FRONT_END, // front end link
+    origin: true, // front end link
     credentials: true
 }))
 
@@ -86,6 +86,7 @@ app.use('/', userRoutes)
 app.use('/', avmetRoutes)
 
 app.get('/', isLoggedIn, async (req, res) => {
+    console.log(req.sessionID)
     if (res.statusCode === 200) {
         const avmet = await Avmet.find({})
         res.json(avmet)

@@ -6,6 +6,7 @@ const { isLoggedIn } = require('../middleware');
 
 
 router.post('/login', passport.authenticate('local', { keepSessionInfo: true }), async (req, res) => {
+    console.log(req.sessionID)
     res.json({
         authenticated: req.isAuthenticated(),
         session: req.sessionID,
