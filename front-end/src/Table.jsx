@@ -34,9 +34,14 @@ function AvmetTable() {
     )
 
     const initialiseAvmetList = async () => {
-        let res = await axios.get(`${BACKEND_URL}`)
-        let data = res.data
-        setavmetList(data)
+        try {
+            let res = await axios.get(`${BACKEND_URL}`)
+            let data = res.data
+            console.log(data)
+            setavmetList(data)
+        } catch (e) {
+            navigate('/login')
+        }
     }
 
     const clickHandler = (mcl) => {
@@ -71,8 +76,15 @@ function AvmetTable() {
         initialiseAvmetList()
     }
 
+    const logoutHandler = async () => {
+        let logout = await axios.get(`${BACKEND_URL}logout`)
+        console.log(logout)
+        navigate('/login')
+    }
+
     return (
         <div>
+            <button onClick={logoutHandler}>Logout</button>
             {uselocation.state !== null &&
                 <AlertMsg
                     display={true}
@@ -128,8 +140,8 @@ function AvmetTable() {
                             <TableItems
                                 // onClick={() => clickHandler(avmet.mcl)}
                                 key={avmet.mcl}
-                                avmet = {avmet}
-                                clickHandler = {clickHandler}
+                                avmet={avmet}
+                                clickHandler={clickHandler}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                             </TableItems>
                         ))}

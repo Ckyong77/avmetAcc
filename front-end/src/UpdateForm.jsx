@@ -17,9 +17,13 @@ function UpdateForm() {
     useEffect(
         function () {
             const retrieveAvmet = async () => {
-                let res = await axios.get(`${BACKEND_URL}${id}`)
-                let data = res.data
-                setAvmet(data)
+                try {
+                    let res = await axios.get(`${BACKEND_URL}${id}`)
+                    let data = res.data
+                    setAvmet(data)
+                }catch(e){
+                    navigate('/login')
+                }
             }
             retrieveAvmet()
         }, []
@@ -28,7 +32,7 @@ function UpdateForm() {
     const submitHandler = async (event) => {
         event.preventDefault()
         console.log("submitted")
-        navigate('/',{state:"success"})
+        navigate('/', { state: "success" })
         await axios.put(`${BACKEND_URL}${id}`, { avmet })
     }
 
@@ -38,10 +42,10 @@ function UpdateForm() {
         })
     }
 
-    const cancelHandler = ()=>{
-        navigate('/', {state:"cancelled"})
+    const cancelHandler = () => {
+        navigate('/', { state: "cancelled" })
     }
-    
+
     return (
         <form onSubmit={submitHandler}>
             <Box
