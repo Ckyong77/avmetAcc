@@ -90,8 +90,8 @@ app.get('/', isLoggedIn, async (req, res) => {
     if (res.statusCode === 200) {
         const avmet = await Avmet.find({})
         res.json(avmet)
-    } else{
-        res.send('/login')
+    } else {
+        res.json({ session: req.sessionID, path: '/login' })
     }
 })
 
