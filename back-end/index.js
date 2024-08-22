@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')
+const cookieParse = require('cookie-parser')
 const MongoStore = require('connect-mongo')
 
 //require routes
@@ -20,13 +21,14 @@ const { isLoggedIn } = require('./middleware')
 //models
 const Avmet = require('./models/avmet')
 const User = require('./models/user')
+const cookieParser = require('cookie-parser')
 
 //initialise express
 const app = express()
 
 
 //initialise mongoose
-const dbURL = process.env.DB_URL || 'mongodb://localhost:27017/avmet'
+const dbURL = process.env.DB_URL
 
 async function main() {
     await mongoose.connect(dbURL)
@@ -49,7 +51,25 @@ const store = MongoStore.create({
     }
 })
 
-//configuring sessions
+
+//configuring sessions in localhost
+// const sessionConfig = {
+//     store: store,
+//     secret: process.env.SECRET, //required parameter
+//     name: process.env.SESSION_NAME, //this is to change the default connectsid, so people cannot see what is the session name on the console. 
+//     resave: false, //set to false if we are not using session.touch()
+//     saveUninitialized: true, //set to true if want to track session id
+//     cookie: {
+//         httpOnly: false,
+//         secure: false, //recommended for https:// webpages. if project, we wont have https. 
+//         expires: Date.now() + 604800000,
+//         maxAge: 604800000,
+//         // sameSite:'none'
+//     }
+// }
+
+
+//configuring sessions in deployment
 const sessionConfig = {
     store: store,
     secret: process.env.SECRET, //required parameter
@@ -57,7 +77,7 @@ const sessionConfig = {
     resave: false, //set to false if we are not using session.touch()
     saveUninitialized: true, //set to true if want to track session id
     cookie: {
-        httpOnly: false,
+        httpOnly: true,
         secure: true, //recommended for https:// webpages. if project, we wont have https. 
         expires: Date.now() + 604800000,
         maxAge: 604800000,
@@ -69,8 +89,17 @@ const sessionConfig = {
 //definiting  uses
 app.use(session(sessionConfig))
 app.use(express.json())
+app.use(cookieParser())
+
+//cors in development
+// app.use(cors({
+//     origin: true, // front end link
+//     credentials: true
+// }))
+
+//cors in deployment
 app.use(cors({
-    origin: true, // front end link
+    origin: process.env.FRONT_END, // front end link
     credentials: true
 }))
 
