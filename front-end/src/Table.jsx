@@ -39,6 +39,7 @@ function AvmetTable() {
             let data = res.data
             setavmetList(data)
         } catch (e) {
+            console.log(e.response)
             navigate(`${e.response.data}`)
         }
     }
