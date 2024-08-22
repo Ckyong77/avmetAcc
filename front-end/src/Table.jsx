@@ -40,7 +40,7 @@ function AvmetTable() {
             setavmetList(data)
         } catch (e) {
             console.log(e.response)
-            navigate(`${e.response.data}`)
+            navigate(`${e.response.data.path}`)
         }
     }
 
