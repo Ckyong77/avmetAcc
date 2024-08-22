@@ -59,7 +59,7 @@ const sessionConfig = {
     cookie: {
         httpOnly: true,
         domain: 'localhost',
-        secure: false, //recommended for https:// webpages. if project, we wont have https. 
+        secure: true, //recommended for https:// webpages. if project, we wont have https. 
         expires: Date.now() + 604800000,
         maxAge: 604800000
     }
