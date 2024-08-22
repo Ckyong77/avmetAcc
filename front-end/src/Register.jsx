@@ -3,18 +3,37 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form"
+import { useNavigate } from 'react-router-dom';
 import './Register.css'
 
 function RegisterPage() {
-    const [user, setUser] = useState({ username: '', password: '', email: '' })
+    const [user, setUser] = useState({ username: '', password: '', email: '' , admin:false})
     const [registerResult, setRegisterResult] = useState('')
+    const [logged, setLogged] = useState(false)
+    const navigate = useNavigate()
     const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, reset, formState: { errors } } = useForm()
+
+    useEffect(
+        function () {
+            async function isLoggedIn() {
+                try {
+                    let res = await axios.get(`${BACKEND_URL}register`)
+                    let data = res.data
+                    console.log(data)
+                } catch (e) {
+                    navigate(`${e.response.data}`)
+                }
+            } isLoggedIn()
+        },[]
+    )
 
     const registerUser = async () => {
+        console.log(user)
         let res = await axios.post(`${BACKEND_URL}register`, { user })
         let data = res.data
-        setRegisterResult(data.message)
+        setRegisterResult(data.message);
+        reset();
     }
 
     useEffect(function () {
@@ -23,7 +42,7 @@ function RegisterPage() {
         , [user])
 
     const registerHandler = (formData) => {
-        setUser({ username: formData.username, password: formData.password, email: formData.email });
+        setUser({ ...user,username: formData.username, password: formData.password, email: formData.email });
     }
 
     const registerOptions = {

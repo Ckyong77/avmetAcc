@@ -8,12 +8,14 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const passport = require('passport')
 const session = require('express-session')
-const LocalStrategy = require('passport-local').Strategy
-const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')
 
+//require routes
+const userRoutes = require('./routes/user')
+const avmetRoutes = require('./routes/avmet')
+
 //require middleware
-const {isLoggedIn} = require('./middleware')
+const { isLoggedIn } = require('./middleware')
 
 //models
 const Avmet = require('./models/avmet')
@@ -44,7 +46,8 @@ const store = MongoStore.create({
     mongoUrl: dbURL,
     crypto: {
         secret: process.env.SECRET
-    }})
+    }
+})
 
 //configuring sessions
 const sessionConfig = {
@@ -64,7 +67,6 @@ const sessionConfig = {
 
 
 //definiting  uses
-app.use(cookieParser())
 app.use(session(sessionConfig))
 app.use(express.json())
 app.use(cors({
@@ -80,56 +82,17 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser()); // how to store user in session
 passport.deserializeUser(User.deserializeUser()); // how to remove user in session
 
+//routes
+app.use('/', userRoutes)
+app.use('/', avmetRoutes)
 
-app.post('/login', passport.authenticate('local', { keepSessionInfo: true }), async (req, res) => {
-    res.json({authenticated: req.isAuthenticated() ,
-        session: req.sessionID
-    })
-})
-
-app.post("/register", async (req, res) => {
-    try {
-        const { username, password, email } = req.body.user;
-        const newUser = await new User({ email, username })
-        const registerUser = await User.register(newUser, password)
-        req.login(registerUser, (err) => {
-            if (err) {
-                return next(err)
-            }
-            res.redirect('/')
-        })
-    } catch (e) {
-        res.send(e)
+app.get('/', isLoggedIn, async (req, res) => {
+    if (res.statusCode === 200) {
+        const avmet = await Avmet.find({})
+        res.json(avmet)
+    } else{
+        res.send('/login')
     }
-})
-
-app.get('/logout', function(req, res, next){
-    req.logout(function(err) {
-      if (err) { return next(err); }
-    });
-    res.send('logged out')
-  });
-
-
-app.get('/:mcl', isLoggedIn,async (req, res) => {
-    console.log(req.sessionID)
-    const { mcl } = req.params;
-    const foundAvmet = await Avmet.find({ mcl })
-    res.json(foundAvmet[0])
-})
-
-app.put('/:mcl',  isLoggedIn, async (req, res) => {
-    const { mcl } = req.params;
-    const avmet = await Avmet.find({ mcl })
-    const id = avmet[0].id
-    const { tailNo, location, user, status, bookIO, sqn } = req.body.avmet
-    await Avmet.findByIdAndUpdate(id, { mcl, tailNo, location, user, status, bookIO, sqn })
-})
-
-app.get('/', isLoggedIn ,async (req, res) => {
-    console.log(req.user)
-    const avmet = await Avmet.find({})
-    res.json(avmet)
 })
 
 app.listen(3000, () => {

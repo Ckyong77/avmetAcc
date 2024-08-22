@@ -37,10 +37,9 @@ function AvmetTable() {
         try {
             let res = await axios.get(`${BACKEND_URL}`)
             let data = res.data
-            console.log(data)
             setavmetList(data)
         } catch (e) {
-            navigate('/login')
+            navigate(`${e.response.data}`)
         }
     }
 
