@@ -58,8 +58,7 @@ const sessionConfig = {
     saveUninitialized: true, //set to true if want to track session id
     cookie: {
         httpOnly: true,
-        domain: 'localhost',
-        secure: true, //recommended for https:// webpages. if project, we wont have https. 
+        secure: process.env.SECURE, //recommended for https:// webpages. if project, we wont have https. 
         expires: Date.now() + 604800000,
         maxAge: 604800000
     }
@@ -70,7 +69,7 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(express.json())
 app.use(cors({
-    origin: true,
+    origin: process.env.FRONT_END, // front end link
     credentials: true
 }))
 
