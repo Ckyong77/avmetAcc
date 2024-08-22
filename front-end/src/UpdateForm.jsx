@@ -18,7 +18,7 @@ function UpdateForm() {
         function () {
             const retrieveAvmet = async () => {
                 try {
-                    let res = await axios.get(`${BACKEND_URL}${id}`)
+                    let res = await axios.get(`${BACKEND_URL}${id}`,{withCredentials:true})
                     let data = res.data
                     setAvmet(data)
                 }catch(e){
@@ -33,7 +33,7 @@ function UpdateForm() {
         event.preventDefault()
         console.log("submitted")
         navigate('/', { state: "success" })
-        await axios.put(`${BACKEND_URL}${id}`, { avmet })
+        await axios.put(`${BACKEND_URL}${id}`, { avmet },{withCredentials:true})
     }
 
     const updateHandle = (event) => {

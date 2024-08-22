@@ -20,7 +20,7 @@ function LoginPage() {
     async function verifyLogin() {
         try {
             //spreading the details because passing into node will be {loginDetails : {username:username, password:password}}
-            let res = await axios.post(`${BACKEND_URL}login`, { ...loginDetails })
+            let res = await axios.post(`${BACKEND_URL}login`, { ...loginDetails },{withCredentials:true})
             let data = res.data;
             console.log(data)
             if (data) {

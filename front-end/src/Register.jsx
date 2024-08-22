@@ -18,7 +18,7 @@ function RegisterPage() {
         function () {
             async function isLoggedIn() {
                 try {
-                    let res = await axios.get(`${BACKEND_URL}register`)
+                    let res = await axios.get(`${BACKEND_URL}register`,{withCredentials:true})
                     let data = res.data
                     console.log(data)
                 } catch (e) {
@@ -30,7 +30,7 @@ function RegisterPage() {
 
     const registerUser = async () => {
         console.log(user)
-        let res = await axios.post(`${BACKEND_URL}register`, { user })
+        let res = await axios.post(`${BACKEND_URL}register`, { user },{withCredentials:true})
         let data = res.data
         setRegisterResult(data.message);
         reset();

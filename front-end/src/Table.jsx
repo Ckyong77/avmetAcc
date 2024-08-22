@@ -35,7 +35,7 @@ function AvmetTable() {
 
     const initialiseAvmetList = async () => {
         try {
-            let res = await axios.get(`${BACKEND_URL}`)
+            let res = await axios.get(`${BACKEND_URL}`,{withCredentials:true})
             let data = res.data
             setavmetList(data)
         } catch (e) {
@@ -77,7 +77,7 @@ function AvmetTable() {
     }
 
     const logoutHandler = async () => {
-        let logout = await axios.get(`${BACKEND_URL}logout`)
+        let logout = await axios.get(`${BACKEND_URL}logout`,{withCredentials:true})
         console.log(logout)
         navigate('/login')
     }
