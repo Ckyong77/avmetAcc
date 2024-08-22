@@ -9,8 +9,8 @@ import axios from 'axios'
 const url = 'http://localhost:3000/'
 
 function App() {
+  axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL
   axios.defaults.withCredentials = true; // THIS IS VERY IMPORTANT TO INCLUDE!!!!
-  
   return (
     <>
       <h1>AvMet accountability</h1>
