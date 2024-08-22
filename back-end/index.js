@@ -58,9 +58,10 @@ const sessionConfig = {
     saveUninitialized: true, //set to true if want to track session id
     cookie: {
         httpOnly: false,
-        secure: false, //recommended for https:// webpages. if project, we wont have https. 
+        secure: true, //recommended for https:// webpages. if project, we wont have https. 
         expires: Date.now() + 604800000,
-        maxAge: 604800000
+        maxAge: 604800000,
+        sameSite:'none'
     }
 }
 
