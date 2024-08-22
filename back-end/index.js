@@ -70,7 +70,7 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(express.json())
 app.use(cors({
-    origin: true,
+    origin: process.env.FRONT_END,
     credentials: true
 }))
 
